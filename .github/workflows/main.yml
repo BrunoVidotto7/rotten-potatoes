@@ -1,5 +1,6 @@
 name: CI-CD
 
+#CI
 on:
   push:
     branches: [ main ]
@@ -7,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
     
     steps:
@@ -28,3 +29,18 @@ jobs:
           tags: |
             glasscode/rotten-potatoes:latest
             glasscode/rotten-potates:${{ github.run_number }}
+# CD
+
+  CD:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S-CONFIG }}
+    
+
